@@ -141,11 +141,8 @@ class _AddUserFormState extends State<AddUserForm> {
       if (userForm.validate()) {
         userForm.save();
         debugPrint('User form is being saved.');
-        saveToUsersHive(
-          nameController.text,
-          int.parse(ageController.text),
-          cityController.text,
-        );
+        sureConsent();
+
         return true;
       }
     }
@@ -153,7 +150,50 @@ class _AddUserFormState extends State<AddUserForm> {
     return false;
   }
 
-  void saveToUsersHive(String name, int age, String city) {
+  sureConsent() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('ADD USER'),
+          content: const Text(
+            'A new user will be added. Are you sure ?',
+          ),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Yes'),
+              onPressed: () {
+                Navigator.pop(context);
+                saveToUsersHive(
+                  nameController.text,
+                  int.parse(ageController.text),
+                  cityController.text,
+                );
+                SnackBar snackBar = const SnackBar(
+                  content: Text('User has been added successfully !'),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future saveToUsersHive(String name, int age, String city) async {
     User user = User()
       ..name = name
       ..age = age

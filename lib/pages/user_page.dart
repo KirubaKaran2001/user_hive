@@ -39,44 +39,51 @@ class _UsersPageState extends State<UsersPage> {
         appBar: AppBar(
           title: const Text('Users List'),
         ),
-        body:
-            // (usersList!.isEmpty)
-            // ? const Center(
-            //     child: Text(
-            //       'Users\' List is empty    :(',
-            //       style: TextStyle(
-            //         fontWeight: FontWeight.bold,
-            //       ),
-            //     ),
-            //   )
-            // :
-            ValueListenableBuilder(
-          valueListenable: usersBox.listenable(),
-          builder: (BuildContext context, value, Widget? child) =>
-              ValueListenableBuilder(
-            valueListenable: usersListNotifier!,
-            builder:
-                (BuildContext context, List<User> usersList, Widget? child) =>
-                    ListView.builder(
-              itemCount: usersList.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(usersList[index].name!),
-                        Text(usersList[index].age!.toString()),
-                        Text(usersList[index].city!),
-                      ],
-                    ),
+        body: (usersList!.isEmpty)
+            ? const Center(
+                child: Text(
+                  'Users\' List is empty    :(',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
-                );
-              },
-            ),
-          ),
-        ),
+                ),
+              )
+            : ValueListenableBuilder(
+                valueListenable: usersBox.listenable(),
+                builder: (BuildContext context, value, Widget? child) =>
+                    ValueListenableBuilder(
+                  valueListenable: usersListNotifier!,
+                  builder: (BuildContext context, List<User> usersList,
+                          Widget? child) =>
+                      ListView.builder(
+                    itemCount: usersList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(usersList[index].name!),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text(usersList[index].age!.toString()),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text(usersList[index].city!),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
       ),
     );
   }
