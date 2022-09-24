@@ -165,8 +165,8 @@ class _UsersPageState extends State<UsersPage> {
               ),
               child: const Text('Yes'),
               onPressed: () {
-                Navigator.pop(context);
                 deleteData(usersList![index]);
+                Navigator.pop(context);
                 SnackBar snackBar = const SnackBar(
                   content: Text('User has been deleted successfully !'),
                 );
