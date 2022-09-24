@@ -1,4 +1,8 @@
+import 'dart:core';
+import 'dart:core';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:user_hive/databases/user_class.dart';
@@ -14,7 +18,7 @@ class _UsersPageState extends State<UsersPage> {
   Box<User> usersBox = Hive.box<User>('user');
   List<User>? usersList;
   ValueNotifier<List<User>>? usersListNotifier;
-
+  // late User user;
   @override
   void initState() {
     super.initState();
@@ -60,22 +64,62 @@ class _UsersPageState extends State<UsersPage> {
                     itemBuilder: (BuildContext context, int index) {
                       return Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: Slidable(
+                            startActionPane: ActionPane(
+                              motion: const ScrollMotion(),
                               children: [
-                                Text(usersList[index].name!),
-                                const SizedBox(
-                                  height: 10,
+                                SlidableAction(
+                                  onPressed: deleteData(),
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 199, 172, 172),
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.delete,
+                                  label: 'Delete',
                                 ),
-                                Text(usersList[index].age!.toString()),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Text(usersList[index].city!),
                               ],
+                            ),
+                            child: Card(
+                              elevation: 0,
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(usersList[index].name!),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(usersList[index].age!.toString()),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(usersList[index].city!),
+                                      ],
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        print('@@@@@@@@@@@@@@@@@@@@@@@@');
+                                        print(usersList[index]);
+                                        Navigator.pushNamed(
+                                          context,
+                                          '/updateUser',
+                                          arguments: [
+                                            usersList[index],
+                                          ],
+                                        );
+                                      },
+                                      icon: const Icon(Icons.edit),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -86,5 +130,18 @@ class _UsersPageState extends State<UsersPage> {
               ),
       ),
     );
+  }
+
+  deleteData() {}
+  updateData(
+    User user,
+    String name,
+    int age,
+    String city,
+  ) {
+    user.name = name;
+    user.age = age;
+    user.city = city;
+    user.save();
   }
 }

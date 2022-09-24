@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:user_hive/databases/user_class.dart';
-import 'package:user_hive/form/user_form.dart';
+import 'package:user_hive/form/add_user_form.dart';
+import 'package:user_hive/form/update_user_form.dart';
 import 'package:user_hive/pages/user_page.dart';
 
 Future<void> main() async {
@@ -30,8 +31,10 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: (RouteSettings settings) {
         debugPrint('build route for ${settings.name}');
         var routes = <String, WidgetBuilder>{
-          '/usersPage': (BuildContext context) => const UsersPage(),
           '/addUser': (BuildContext context) => const AddUserForm(),
+          '/updateUser': (BuildContext context) {
+            return UpdateUser(settings.arguments as User?);
+          },
         };
         WidgetBuilder builder = routes[settings.name]!;
         return MaterialPageRoute(
