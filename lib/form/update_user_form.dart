@@ -22,9 +22,6 @@ class _UpdateUserState extends State<UpdateUser> {
   void initState() {
     super.initState();
     user = widget.user;
-    user!.name = widget.user!.name;
-    user!.age = widget.user!.age;
-    user!.city = widget.user!.city;
     nameController.text = user!.name!;
     ageController.text = user!.age!.toString();
     cityController.text = user!.city!;
@@ -179,11 +176,11 @@ class _UpdateUserState extends State<UpdateUser> {
               child: const Text('Yes'),
               onPressed: () {
                 Navigator.pop(context);
-                // saveToUsersHive(
-                //   nameController.text,
-                //   int.parse(ageController.text),
-                //   cityController.text,
-                // );
+                updateUsersHive(
+                  nameController.text,
+                  int.parse(ageController.text),
+                  cityController.text,
+                );
                 SnackBar snackBar = const SnackBar(
                   content: Text('User has been updated successfully !'),
                 );
@@ -205,12 +202,12 @@ class _UpdateUserState extends State<UpdateUser> {
     );
   }
 
-  // Future saveToUsersHive(String name, int age, String city) async {
-  //   user.name = name;
-  //   user.age = age;
-  //   user.city = city;
-  //   debugPrint(user.name.toString());
-  //   user.save();
-  //   Navigator.pop(context);
-  // }
+  Future updateUsersHive(String name, int age, String city) async {
+    user!.name = name;
+    user!.age = age;
+    user!.city = city;
+    debugPrint(user!.name.toString());
+    user!.save();
+    Navigator.pop(context);
+  }
 }
